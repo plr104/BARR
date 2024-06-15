@@ -24,9 +24,9 @@ def main():
 
    print("\t\t  **BARR**\n\t  A cool Rogue RPG by PLR\n")
    currentRoom = eng.Room((12, 8))  # create a beginning 8x16 room
-   eng.GameObj(currentRoom, (1,2), True).p_init()
+   eng.GameObj(currentRoom, (1,2), True).p_init() # create a static object
    ##player.prompt_plyr_atts() # assign player attributes
-   player = eng.Player(currentRoom, "Phill", 10, 10, 10, 10, 10, 9001)
+   player = eng.Player(currentRoom, "Phill", 10, 10, 10, 10, 10, 9001) # move setting attributes values to a dedicated method
    player.p_init()
 
    ##someWalls = eng.create_statics(currentRoom, 0, 20)

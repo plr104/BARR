@@ -22,7 +22,7 @@ class Room:
        self.Size = init_size  # the size of the room (x, y)
        self.Floor = init_floor  # the floor the room is on may determine the enemy types and/or a collection of rooms
        self.Objects = init_objects  # list of all objects to be recognized as being in the room
-       self.MapString = init_string  # a string representation of the room
+       self.MapString = init_string  # a string representation of the room's GameObjs
 
    def __str__(self):
        return self.MapString
@@ -30,7 +30,7 @@ class Room:
    def add_obj(self, new_obj):
        """ Add newObject to Objects. """
       
-       if not new_obj._IsPhysical:
+       if not new_obj._IsPhysical: # TODO: make this optional for basic GameObjs, run an initialization func for GameObjs so they check themselves
            raise NotPhysical("GameObj is not physical")
       
        if self.is_solid_at(new_obj.pos):
@@ -130,6 +130,7 @@ class GameObj:
        self._IsPhysical = True
        self._CRoom.add_obj(self)
 
+    #TODO make a generic version of this called move_to
    def move_8d(self, direction, distance):  # move in a cardinal direction a number of units
        new_pos = self.pos
 
@@ -206,10 +207,10 @@ class Player(GameObj):
    def __str__(self):
        return '@'
 
-   def stat_string(self):  #move to main later#
+   def stat_string(self):  #TODO : move to main later
        return "Health: {}  Exp: {}  Level: {}\n".format(self.Htp[0], self.Exp, self.Lvl)
 
-   def prompt_plyr_atts(self):
+   def prompt_plyr_atts(self): # TODO : this should be defined in barr/main
        """ Collect and assign the player attributes from a series of prompts. """
 
        ans1 = ''
@@ -250,9 +251,11 @@ class Player(GameObj):
 def clear():
    """ Clear the terminal """
 
+    #TODO : look up best ways to clear the terminal on different OSs, and only clear on whitelisted OSs
    os.system('clear') ##'cls' if os.name() == 'nt' else 'clear')
 
 
+# TODO : genericize this to something like create_adjacent_objects w args to set the GameObj, or better yet clone a given GameObj
 def create_statics(room, w, l, start_pos=(0, 0), solidity=True): ##**NOT FINISHED**##
    """ Return static objects in list, assigned their position;
    first with position (startPos), last with position (startPos[0]+w, startPos[1]+l). """
@@ -264,10 +267,10 @@ def create_statics(room, w, l, start_pos=(0, 0), solidity=True): ##**NOT FINISHE
            newStatic = GameObj(room, (row, col), solidity)
            newStatic.p_init()
            statics.append([newStatic])  # add static @ pos(row, col)
-           print((row, col))  # poop #
+           print((row, col))  # TEMP #
 
    print("made the walls")
    return statics
 
-def distance_to(a, b):
+def distance_to(a, b): # TODO : move this under GameObj
    return math.sqrt((a[0] - b[0]) **2 + (a[1] - b[1]) **2)
